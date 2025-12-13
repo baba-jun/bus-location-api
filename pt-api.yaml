@@ -1,0 +1,935 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "ODPT API"
+  description: "API for managing ODPT resources"
+servers:
+  - url: "https://api.example.com/v1"
+    description: "ODPT server"
+paths:
+  /location/busvehicle:
+    get:
+      summary: "バスの位置情報を取得"
+      description: "バスの位置情報を示すクラス"
+      parameters:
+        - name: operator
+          in: query
+          required: true
+          description: "事業者のID (odpt:Operatorのowl:sameAs)"
+          schema:
+            type: string
+        - name: busNumber
+          in: query
+          required: false
+          description: "バス車両番号でフィルタ"
+          schema:
+            type: string
+        - name: busTimetable
+          in: query
+          required: false
+          description: "運行中の便の時刻表のIDでフィルタ (odpt:BusTimetableのowl:sameAs)"
+          schema:
+            type: string
+        - name: toBusstopPole
+          in: query
+          required: false
+          description: "次に到着するバス停のIDでフィルタ (odpt:BusstopPoleのowl:sameAs)"
+          schema:
+            type: string
+        - name: busroutePattern
+          in: query
+          required: false
+          description: "運行中の系統のIDでフィルタ (odpt:BusroutePatternのowl:sameAs)"
+          schema:
+            type: string
+        - name: fromBusstopPole
+          in: query
+          required: false
+          description: "直近に通過した、あるいは停車中のバス停のIDでフィルタ (odpt:BusstopPoleのowl:sameAs)"
+          schema:
+            type: string
+        - name: startingBusstopPole
+          in: query
+          required: false
+          description: "運行中系統の始発バス停を表すIDでフィルタ (odpt:BusstopPoleのowl:sameAs)"
+          schema:
+            type: string
+        - name: terminalBusstopPole
+          in: query
+          required: false
+          description: "運行中系統の終着バス停を表すIDでフィルタ (odpt:BusstopPoleのowl:sameAs)"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "特定の事業者のバス車両の位置情報を取得する"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bus'
+                example:
+                  "id": "urn:ucode:_00001C000000000000010000031008D6"
+                  "type": "odpt:Bus"
+                  "date": "2025-12-01T17:56:31+09:00"
+                  "operator": "odpt.Operator:Toei"
+                  "busNumber": "B786"
+                  "busTimetable": "odpt.BusTimetable:Toei.RH01.08403-1-09-170-1749"
+                  "toBusstopPole": "odpt.BusstopPole:Toei.AoyamagakuinChutobu.7.1"
+                  "busroutePattern": "odpt.BusroutePattern:Toei.RH01.8403.1"
+                  "fromBusstopPole": "odpt.BusstopPole:Toei.ShibuyaStation.636.6"
+                  "fromBusstopPoleTime": "2025-12-01T17:49:13+09:00"
+                  "startingBusstopPole": "odpt.BusstopPole:Toei.ShibuyaStation.636.6"
+                  "terminalBusstopPole": "odpt.BusstopPole:Toei.RoppongiHills.2480.1"
+  /busroutepattern:
+    get:
+      summary: "バス路線の系統情報を取得"
+      description: "バス路線の系統情報を示すクラス"
+      parameters:
+        - name: operator
+          in: path
+          required: true
+          description: "事業者のID (odpt:Operatorのowl:sameAs)"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "特定の事業者のバス路線の系統情報を取得する"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusroutePattern'
+                example:
+                  "id": "urn:ucode:_00001C00000000000001000003B0C522"
+                  "type": "odpt:BusroutePattern"
+                  "date": "2025-11-25T03:08:08+09:00"
+                  "title": "梅７０ 青梅車庫行"
+                  "region": {
+                    "type": "LineString",
+                    "coordinates": [
+                      [139.513325, 35.726726],
+                      [139.513614, 35.726578],
+                      [139.513818, 35.726565],
+                      [139.514479, 35.728255],
+                      [139.51458, 35.728664],
+                      [139.514821, 35.730407],
+                      [139.512328, 35.73049],
+                      [139.503073, 35.730649],
+                      [139.498602, 35.730721],
+                      [139.49207, 35.73078],
+                      [139.487711, 35.730729],
+                      [139.485123, 35.730717],
+                      [139.47938, 35.730598],
+                      [139.47556, 35.73046],
+                      [139.470476, 35.730245],
+                      [139.467845, 35.73018],
+                      [139.465719, 35.730133],
+                      [139.456645, 35.730876],
+                      [139.450774, 35.731323],
+                      [139.448711, 35.731384],
+                      [139.448423, 35.731401],
+                      [139.4471, 35.731476],
+                      [139.444258, 35.731823],
+                      [139.440967, 35.732134],
+                      [139.438007, 35.732603],
+                      [139.436463, 35.733005],
+                      [139.435806, 35.733131],
+                      [139.435634, 35.733142],
+                      [139.435271, 35.733838],
+                      [139.434476, 35.733529],
+                      [139.434141, 35.734036],
+                      [139.43509, 35.734246],
+                      [139.43466, 35.73518],
+                      [139.434662, 35.735443],
+                      [139.43445, 35.7355],
+                      [139.43445, 35.7355],
+                      [139.432681, 35.738598],
+                      [139.430419, 35.742476],
+                      [139.429119, 35.744712],
+                      [139.428522, 35.74575],
+                      [139.427473, 35.747099],
+                      [139.427389, 35.747245],
+                      [139.426766, 35.748731],
+                      [139.426475, 35.74966],
+                      [139.42641, 35.74999],
+                      [139.426426, 35.750349],
+                      [139.42689, 35.75207],
+                      [139.427045, 35.752657],
+                      [139.426501, 35.752737],
+                      [139.424805, 35.752749],
+                      [139.423231, 35.753209],
+                      [139.422461, 35.753269],
+                      [139.42205, 35.753446],
+                      [139.42171, 35.753676],
+                      [139.420622, 35.754079],
+                      [139.420391, 35.754121],
+                      [139.419657, 35.754139],
+                      [139.419079, 35.754269],
+                      [139.418527, 35.754431],
+                      [139.41799, 35.754574],
+                      [139.417491, 35.754866],
+                      [139.416918, 35.75502],
+                      [139.416471, 35.7552],
+                      [139.41622, 35.755254],
+                      [139.414984, 35.755354],
+                      [139.413318, 35.755803],
+                      [139.412888, 35.756016],
+                      [139.412579, 35.756109],
+                      [139.410332, 35.756623],
+                      [139.409602, 35.756687],
+                      [139.406013, 35.757763],
+                      [139.405626, 35.757807],
+                      [139.402691, 35.75795],
+                      [139.401814, 35.757875],
+                      [139.401502, 35.757785],
+                      [139.40127, 35.7576],
+                      [139.400414, 35.755986],
+                      [139.399382, 35.754132],
+                      [139.39506, 35.75449],
+                      [139.39506, 35.75449],
+                      [139.39193, 35.7547],
+                      [139.38872, 35.75497],
+                      [139.38714, 35.75544],
+                      [139.38555, 35.75593],
+                      [139.38496, 35.75618],
+                      [139.38306, 35.75706],
+                      [139.38226, 35.75737],
+                      [139.381, 35.75766],
+                      [139.38033, 35.75783],
+                      [139.37854, 35.75889],
+                      [139.37749, 35.75917],
+                      [139.37732, 35.75918],
+                      [139.37696, 35.75919],
+                      [139.37521, 35.75905],
+                      [139.37485, 35.75905],
+                      [139.37423, 35.75918],
+                      [139.37162, 35.76008],
+                      [139.37001, 35.76066],
+                      [139.36822, 35.76173],
+                      [139.36617, 35.76295],
+                      [139.36505, 35.76394],
+                      [139.36433, 35.76448],
+                      [139.36238, 35.76558],
+                      [139.36178, 35.76584],
+                      [139.36049, 35.7663],
+                      [139.36021, 35.76637],
+                      [139.35931, 35.76648],
+                      [139.35892, 35.76658],
+                      [139.3577, 35.76712],
+                      [139.35702, 35.76736],
+                      [139.35599, 35.76771],
+                      [139.35486, 35.76831],
+                      [139.35426, 35.76862],
+                      [139.35389, 35.7689],
+                      [139.352524, 35.77056],
+                      [139.350103, 35.767323],
+                      [139.3494, 35.767654],
+                      [139.346508, 35.769188],
+                      [139.343369, 35.77087],
+                      [139.343355, 35.770885],
+                      [139.343423, 35.770942],
+                      [139.343792, 35.771131],
+                      [139.344158, 35.771326],
+                      [139.344412, 35.771405],
+                      [139.344715, 35.771443],
+                      [139.345466, 35.771387],
+                      [139.345722, 35.771391],
+                      [139.346186, 35.771456],
+                      [139.346249, 35.771432],
+                      [139.346271, 35.771232],
+                      [139.346214, 35.771171],
+                      [139.346093, 35.77116],
+                      [139.346019, 35.771225],
+                      [139.345458, 35.771365],
+                      [139.344714, 35.771415],
+                      [139.344443, 35.77138],
+                      [139.34419, 35.771311],
+                      [139.343776, 35.771097],
+                      [139.343446, 35.770921],
+                      [139.343364, 35.770876],
+                      [139.343141, 35.771122],
+                      [139.342814, 35.771553],
+                      [139.342763, 35.771691],
+                      [139.340298, 35.775454],
+                      [139.34013, 35.77564],
+                      [139.33956, 35.77589],
+                      [139.33734, 35.7765],
+                      [139.33463, 35.77741],
+                      [139.33187, 35.7784],
+                      [139.32911, 35.77955],
+                      [139.32697, 35.78046],
+                      [139.32596, 35.78084],
+                      [139.32364, 35.78147],
+                      [139.31806, 35.78299],
+                      [139.31496, 35.78382],
+                      [139.31144, 35.7848],
+                      [139.31074, 35.78507],
+                      [139.30902, 35.78581],
+                      [139.30812, 35.78614],
+                      [139.30659, 35.78649],
+                      [139.30355, 35.78719],
+                      [139.30211, 35.78735],
+                      [139.29843, 35.7877],
+                      [139.29576, 35.78802],
+                      [139.29545, 35.78806],
+                      [139.29286, 35.78812],
+                      [139.28923, 35.78838],
+                      [139.28605, 35.78859],
+                      [139.28605, 35.78859],
+                      [139.28271, 35.7888],
+                      [139.28195, 35.78885],
+                      [139.28168, 35.79001],
+                      [139.28133, 35.79128],
+                      [139.2804, 35.7911],
+                      [139.27813, 35.79066],
+                      [139.27485, 35.79003],
+                      [139.27428, 35.78996],
+                      [139.27213, 35.7909],
+                      [139.27173, 35.79096],
+                      [139.27084, 35.79095],
+                      [139.26969, 35.79088],
+                      [139.26837, 35.79058],
+                      [139.26743, 35.79035],
+                      [139.26539, 35.78971],
+                      [139.26433, 35.78935],
+                      [139.26348, 35.78923],
+                      [139.26261, 35.7891],
+                      [139.262, 35.78872],
+                      [139.26173, 35.78867],
+                      [139.25941, 35.78893],
+                      [139.25814, 35.78919],
+                      [139.25823, 35.78942],
+                      [139.2583, 35.78993],
+                      [139.25839, 35.78992],
+                      [139.25847, 35.79016],
+                      [139.25841, 35.79016],
+                      [139.25816, 35.79017],
+                      [139.25807, 35.79017],
+                      [139.25803, 35.79017],
+                      [139.25801, 35.78998],
+                      [139.2583, 35.78993],
+                      [139.25823, 35.78942],
+                      [139.25814, 35.78919],
+                      [139.25713, 35.78953],
+                      [139.25641, 35.78977],
+                      [139.25581, 35.78989],
+                      [139.25501, 35.78992],
+                      [139.25383, 35.78998],
+                      [139.25286, 35.79004],
+                      [139.25195, 35.79011],
+                      [139.25144, 35.79014],
+                      [139.25089, 35.79018],
+                      [139.25047, 35.79021],
+                      [139.25006, 35.79026],
+                      [139.24994, 35.79031],
+                      [139.2499, 35.79034],
+                      [139.249711, 35.790236]
+                    ]
+                  }
+                  "sameAs": "odpt.BusroutePattern:Toei.Ume70.28009.2"
+                  "pattern": "28009"
+                  "busroute": "odpt.Busroute:Toei.Ume70"
+                  "operator": "odpt.Operator:Toei"
+                  "direction": "2"
+                  "busstopPoleOrder": [
+                    {
+                      "odpt:note": "花小金井駅北口",
+                      "odpt:index": 1,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HanaKoganeiStationKitaguchi.2595.2"
+                    },
+                    {
+                      "odpt:note": "小平合同庁舎前",
+                      "odpt:index": 2,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.KodairaGodoChosha.529.2"
+                    },
+                    {
+                      "odpt:note": "花小金井六丁目",
+                      "odpt:index": 3,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HanaKoganeiRokuchome.1234.2"
+                    },
+                    {
+                      "odpt:note": "昭和病院前",
+                      "odpt:index": 4,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ShowaByoin.672.2"
+                    },
+                    {
+                      "odpt:note": "天神町二丁目",
+                      "odpt:index": 5,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.TenjinchoNichome.958.2"
+                    },
+                    {
+                      "odpt:note": "天神町",
+                      "odpt:index": 6,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Tenjincho.957.2"
+                    },
+                    {
+                      "odpt:note": "熊野宮前",
+                      "odpt:index": 7,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Kumanogu.455.2"
+                    },
+                    {
+                      "odpt:note": "小平駅入口",
+                      "odpt:index": 8,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.KodairaStationIriguchi.526.2"
+                    },
+                    {
+                      "odpt:note": "なかまちテラス",
+                      "odpt:index": 9,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.NakamachiTerrace.528.2"
+                    },
+                    {
+                      "odpt:note": "小平消防署前",
+                      "odpt:index": 10,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.KodairaShobosho.2341.2"
+                    },
+                    {
+                      "odpt:note": "青梅街道駅前",
+                      "odpt:index": 11,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OmeKaidoStation.203.2"
+                    },
+                    {
+                      "odpt:note": "新小平駅前",
+                      "odpt:index": 12,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ShinKodairaStation.701.2"
+                    },
+                    {
+                      "odpt:note": "小川町二丁目",
+                      "odpt:index": 13,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OgawachoNichome.264.2"
+                    },
+                    {
+                      "odpt:note": "小平第一小学校前",
+                      "odpt:index": 14,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.KodairaDaiichiShogakko.525.2"
+                    },
+                    {
+                      "odpt:note": "小川町一丁目",
+                      "odpt:index": 15,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OgawachoItchome.263.2"
+                    },
+                    {
+                      "odpt:note": "中宿",
+                      "odpt:index": 16,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Nakajuku.1078.2"
+                    },
+                    {
+                      "odpt:note": "小川寺前",
+                      "odpt:index": 17,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Shosenji.668.2"
+                    },
+                    {
+                      "odpt:note": "小川三差路",
+                      "odpt:index": 18,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OgawaSansaro.262.2"
+                    },
+                    {
+                      "odpt:note": "小川一番",
+                      "odpt:index": 19,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OgawaIchiban.261.2"
+                    },
+                    {
+                      "odpt:note": "小川町一丁目アパート前",
+                      "odpt:index": 20,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OgawachoItchomeApato.2573.2"
+                    },
+                    {
+                      "odpt:note": "東大和市駅前",
+                      "odpt:index": 21,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HigashiYamatoshiStation.1321.2"
+                    },
+                    {
+                      "odpt:note": "南街通り",
+                      "odpt:index": 22,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.NangaiDori.1124.2"
+                    },
+                    {
+                      "odpt:note": "南街入口",
+                      "odpt:index": 23,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.NangaiIriguchi.1123.2"
+                    },
+                    {
+                      "odpt:note": "東大和病院前",
+                      "odpt:index": 24,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HigashiYamatoByoin.1565.2"
+                    },
+                    {
+                      "odpt:note": "中央二丁目",
+                      "odpt:index": 25,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ChuoNichome.575.2"
+                    },
+                    {
+                      "odpt:note": "東大和市役所入口",
+                      "odpt:index": 26,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HigashiYamatoShiyakusho.2123.2"
+                    },
+                    {
+                      "odpt:note": "庚申塚",
+                      "odpt:index": 27,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Koshinzuka.486.2"
+                    },
+                    {
+                      "odpt:note": "大和操車所前",
+                      "odpt:index": 28,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.YamatoSoshajo.1563.2"
+                    },
+                    {
+                      "odpt:note": "奈良橋",
+                      "odpt:index": 29,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Narahashi.1116.2"
+                    },
+                    {
+                      "odpt:note": "八幡神社前",
+                      "odpt:index": 30,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HachimanJinja.1228.2"
+                    },
+                    {
+                      "odpt:note": "蔵敷",
+                      "odpt:index": 31,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Zoshiki.848.2"
+                    },
+                    {
+                      "odpt:note": "芋窪",
+                      "odpt:index": 32,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Imokubo.120.2"
+                    },
+                    {
+                      "odpt:note": "貯水池下",
+                      "odpt:index": 33,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ChosuichiShita.934.2"
+                    },
+                    {
+                      "odpt:note": "大橋",
+                      "odpt:index": 34,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Ohashi.248.2"
+                    },
+                    {
+                      "odpt:note": "中藤",
+                      "odpt:index": 35,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Nakato.1083.2"
+                    },
+                    {
+                      "odpt:note": "三ツ橋",
+                      "odpt:index": 36,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Mitsuhashi.2342.2"
+                    },
+                    {
+                      "odpt:note": "神明二丁目",
+                      "odpt:index": 37,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ShimmeiNichome.744.2"
+                    },
+                    {
+                      "odpt:note": "原山",
+                      "odpt:index": 38,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Harayama.1242.2"
+                    },
+                    {
+                      "odpt:note": "萩の尾薬師堂前",
+                      "odpt:index": 39,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HaginooYakushido.1207.2"
+                    },
+                    {
+                      "odpt:note": "武蔵村山市役所前",
+                      "odpt:index": 40,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.MusashiMurayamaShiyakusho.1518.2"
+                    },
+                    {
+                      "odpt:note": "横田",
+                      "odpt:index": 41,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Yokota.1580.2"
+                    },
+                    {
+                      "odpt:note": "長円寺前",
+                      "odpt:index": 42,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Choenji.933.2"
+                    },
+                    {
+                      "odpt:note": "峰",
+                      "odpt:index": 43,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Mine.1492.2"
+                    },
+                    {
+                      "odpt:note": "三ツ木",
+                      "odpt:index": 44,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Mitsugi.1454.2"
+                    },
+                    {
+                      "odpt:note": "三ツ木薬師前",
+                      "odpt:index": 45,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.MitsugiYakushi.1455.2"
+                    },
+                    {
+                      "odpt:note": "新道",
+                      "odpt:index": 46,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Shindo.733.2"
+                    },
+                    {
+                      "odpt:note": "岸",
+                      "odpt:index": 47,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Kishi.397.2"
+                    },
+                    {
+                      "odpt:note": "殿ヶ谷",
+                      "odpt:index": 48,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Tonogaya.1015.2"
+                    },
+                    {
+                      "odpt:note": "石畑",
+                      "odpt:index": 49,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Ishihata.93.2"
+                    },
+                    {
+                      "odpt:note": "瑞穂第一小学校前",
+                      "odpt:index": 50,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.MizuhoDaiichiShogakko.1447.2"
+                    },
+                    {
+                      "odpt:note": "瑞穂町役場入口",
+                      "odpt:index": 51,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.MizuhomachiyakubaIriguchi.1448.2"
+                    },
+                    {
+                      "odpt:note": "箱根ヶ崎駅前",
+                      "odpt:index": 52,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HakonegasakiStation.1215.4"
+                    },
+                    {
+                      "odpt:note": "箱根ヶ崎",
+                      "odpt:index": 53,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Hakonegasaki.1214.4"
+                    },
+                    {
+                      "odpt:note": "松原",
+                      "odpt:index": 54,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Matsubara.1437.2"
+                    },
+                    {
+                      "odpt:note": "東長岡",
+                      "odpt:index": 55,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HigashiNagaoka.1306.2"
+                    },
+                    {
+                      "odpt:note": "長岡",
+                      "odpt:index": 56,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Nagaoka.1103.2"
+                    },
+                    {
+                      "odpt:note": "西長岡",
+                      "odpt:index": 57,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.NishiNagaoka.1163.2"
+                    },
+                    {
+                      "odpt:note": "中原",
+                      "odpt:index": 58,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Nakahara.1099.2"
+                    },
+                    {
+                      "odpt:note": "新田山公園",
+                      "odpt:index": 59,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ChikusanShikenjo.925.2"
+                    },
+                    {
+                      "odpt:note": "平松",
+                      "odpt:index": 60,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Hiramatsu.1355.2"
+                    },
+                    {
+                      "odpt:note": "新町小学校入口",
+                      "odpt:index": 61,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ShimmachiShogakkoIriguchi.2127.2"
+                    },
+                    {
+                      "odpt:note": "霞町新町",
+                      "odpt:index": 62,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.KasumichoShimmachi.322.2"
+                    },
+                    {
+                      "odpt:note": "新町天神社前",
+                      "odpt:index": 63,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ShimmachiTenjinsha.741.2"
+                    },
+                    {
+                      "odpt:note": "鈴法寺跡",
+                      "odpt:index": 64,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.ReihojiAto.1605.2"
+                    },
+                    {
+                      "odpt:note": "青梅警察署前",
+                      "odpt:index": 65,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OmeKeisatsusho.204.2"
+                    },
+                    {
+                      "odpt:note": "河辺駅入口",
+                      "odpt:index": 66,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.KabeStationIriguchi.337.2"
+                    },
+                    {
+                      "odpt:note": "青梅消防署前",
+                      "odpt:index": 67,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OmeShobosho.1543.2"
+                    },
+                    {
+                      "odpt:note": "師岡町三丁目",
+                      "odpt:index": 68,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.MorookachoSanchome.213.2"
+                    },
+                    {
+                      "odpt:note": "東青梅五丁目",
+                      "odpt:index": 69,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HigashiOmeGochome.1272.2"
+                    },
+                    {
+                      "odpt:note": "東青梅三丁目",
+                      "odpt:index": 70,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HigashiOmeSanchome.1271.2"
+                    },
+                    {
+                      "odpt:note": "六万公園前",
+                      "odpt:index": 71,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.RokumanKoen.1607.2"
+                    },
+                    {
+                      "odpt:note": "東青梅駅北口",
+                      "odpt:index": 72,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.HigashiOmeStationKitaguchi.2359.2"
+                    },
+                    {
+                      "odpt:note": "青梅総合高校入口",
+                      "odpt:index": 73,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OmeSogoKokoIriguchi.1199.2"
+                    },
+                    {
+                      "odpt:note": "西分",
+                      "odpt:index": 74,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Nishiwake.1172.2"
+                    },
+                    {
+                      "odpt:note": "西分二丁目",
+                      "odpt:index": 75,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.NishiwakeNichome.1173.2"
+                    },
+                    {
+                      "odpt:note": "住吉神社前",
+                      "odpt:index": 76,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.SumiyoshiJinja.788.2"
+                    },
+                    {
+                      "odpt:note": "青梅駅前",
+                      "odpt:index": 77,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OmeStation.202.2"
+                    },
+                    {
+                      "odpt:note": "仲町",
+                      "odpt:index": 78,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Nakacho.1080.2"
+                    },
+                    {
+                      "odpt:note": "上町",
+                      "odpt:index": 79,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.Kamicho.353.2"
+                    },
+                    {
+                      "odpt:note": "青梅車庫",
+                      "odpt:index": 80,
+                      "odpt:busstopPole": "odpt.BusstopPole:Toei.OmeShako.206.2"
+                    }
+                  ]
+  /busstoppole:
+    get:
+      summary: "バス停情報の取得"
+      description: "バス停情報を取得します。"
+      parameters:
+        - name: operator
+          in: query
+          required: true
+          description: "事業者のID (odpt:Operatorのowl:sameAs)"
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: false
+          description: "バス停の固有識別子(ucode)でフィルタ"
+          schema:
+            type: string
+        - name: title
+          in: query
+          required: false
+          description: "バス停名で部分一致検索"
+          schema:
+            type: string
+        - name: sameAs
+          in: query
+          required: false
+          description: "バス停(標柱)の固有識別子でフィルタ"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "成功"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusstopPole'
+                example:
+                  - id: "urn:ucode:_00001C0000000000000100000330C435"
+                    type: "odpt:BusstopPole"
+                    sameAs: "odpt.BusstopPole:Toei.ShinagawaStationKonanguchi.605.5"
+                    date: "2025-12-01T03:09:30+09:00"
+                    title: "品川駅港南口"
+                    long: 139.741627
+                    lat: 35.629643
+                    operator: ["odpt.Operator:Toei"]
+components:
+  schemas:
+    Bus:
+      type: object
+      required:
+        - id
+        - type
+        - busNumber
+        - date
+        - busroutePattern
+        - busTimetable
+        - operator
+      properties:
+        id:
+          type: string
+          description: "固有識別子"
+        type:
+          type: string
+          description: "バス運行情報のクラス名、\"odpt:Bus\"が入る"
+        busNumber:
+          type: string
+          description: "バス車両番号"
+        date:
+          type: string
+          format: date-time
+          description: "データ生成時刻"
+        busroutePattern:
+          type: string
+          description: "運行中の系統のID (odpt:BusroutePatternのowl:sameAs)"
+        busTimetable:
+          type: string
+          description: "運行中の便の時刻表のID (odpt:BusTimetableのowl:sameAs)"
+        operator:
+          type: string
+          description: "運行会社のID (odpt:Operatorのowl:sameAs)"
+        startingBusstopPole:
+          type: string
+          description: "運行中系統の始発バス停を表すID (odpt:BusstopPoleのowl:sameAs)"
+        terminalBusstopPole:
+          type: string
+          description: "運行中系統の終着バス停を表すID (odpt:BusstopPoleのowl:sameAs)"
+        fromBusstopPole:
+          type: string
+          description: "直近に通過した、あるいは停車中のバス停のID (odpt:BusstopPoleのowl:sameAs)。 "
+        fromBusstopPoleTime:
+          type: string
+          format: date-time
+          description: "直近に通過したバス停を発車した時刻。odpt:fromBusstopPoleがnullならばodpt:fromBusstopPoleTimeもnullとなる"
+        toBusstopPole:
+          type: string
+          description: "次に到着するバス停のID (odpt:BusstopPoleのowl:sameAs)。 "
+    BusroutePattern:
+      type: object
+      required:
+        - id
+        - type
+        - sameAs
+        - date
+        - title
+        - operator
+      properties:
+        id:
+          type: string
+          description: "固有識別子(ucode)"
+        type:
+          type: string
+          description: "バス路線のクラス名、\"odpt:BusroutePattern\"が入る"
+        sameAs:
+          type: string
+          description: "バス路線情報の固有識別子"
+        date:
+          type: string
+          format: date-time
+          description: "データ生成時刻"
+        title:
+          type: string
+          description: "バス路線名称（系統名・系統番号等）"
+        operator:
+          type: string
+          description: "バス路線を運営する会社のID (odpt:Operatorのowl:sameAs)"
+        busroute:
+          type: string
+          description: "系統を表すID"
+        pattern:
+          type: string
+          description: "系統パターン"
+        direction:
+          type: string
+          description: "方向"
+        region:
+          type: object
+          description: "GeoJSON形式による地物情報"
+        busstopPoleOrder:
+          type: array
+          description: "停留所(標柱)の順序"
+          items:
+            type: object
+            required:
+              - note
+              - index
+              - busstopPole
+            properties:
+              note:
+                type: string
+                description: "バス停(標柱)に関する注記"
+              index:
+                type: integer
+                description: "バス停(標柱)の系統内での順序を表す番号（1から始まる連番）"
+              busstopPole:
+                type: string
+                description: "バス停(標柱)のID (odpt:BusstopPoleのowl:sameAs)"
+    BusstopPole:
+      type: object
+      required:
+        - id
+        - type
+        - sameAs
+        - date
+        - title
+        - long
+        - lat
+        - operator
+      properties:
+        id:
+          type: string
+          description: "固有識別子(ucode)"
+        type:
+          type: string
+          description: "バス停(標柱)のクラス名、\"odpt:BusstopPole\"が入る"
+        sameAs:
+          type: string
+          description: "バス停(標柱)の固有識別子"
+        date:
+          type: string
+          format: date-time
+          description: "データ生成時刻"
+        title:
+          type: string
+          description: "バス停名"
+        long:
+          type: number
+          format: float
+          description: "標柱の経度(WGS84)"
+        lat:
+          type: number
+          format: float
+          description: "標柱の緯度(WGS84)"
+        operator:
+          type: array
+          description: "入線するバスの運営会社を表すID (odpt:Operatorのowl:sameAs) のリスト"
