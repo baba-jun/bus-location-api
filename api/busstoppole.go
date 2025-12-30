@@ -33,7 +33,7 @@ type ODPTBusstopPole struct {
 	Operator []string    `json:"odpt:operator"`
 }
 
-//go:embed../assets/odpt_BusstopPole_Toei.json
+//go:embed assets/odpt_BusstopPole_Toei.json
 var toeiData []byte
 
 func Handler(w http.ResponseWriter, r *http.Request) {
