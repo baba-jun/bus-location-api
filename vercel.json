@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/location/busvehicle",
+      "destination": "/api/busvehicle"
+    },
+    {
+      "source": "/busstoppole",
+      "destination": "/api/busstoppole"
+    }
+  ]
+}
