@@ -97,11 +97,6 @@ func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the Transport Realtime API!")
-	fmt.Println("Endpoint Hit: homePage")
-}
-
 // バス位置情報を取得するハンドラー
 func getBusVehicleLocation(w http.ResponseWriter, r *http.Request) {
 	// クエリパラメータからoperatorを取得
@@ -349,7 +344,6 @@ func getBusstopPole(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", corsMiddleware(homePage))
 	http.HandleFunc("/location/busvehicle", corsMiddleware(getBusVehicleLocation))
 	http.HandleFunc("/busstoppole", corsMiddleware(getBusstopPole))
 
